@@ -15,10 +15,10 @@ import java.util.Scanner;
 public class uncertainityCalculuator {
     protected CalculusEngine engine;
     public static void main(String [] args){
-       CalculusEngine engine = new CalculusEngine();
+      /* CalculusEngine engine = new CalculusEngine();
         // CalcFunction function1 = engine.derivative("DIFF(ln(x),x)");
         CalcFunction function2 = engine.derivative("DIFF(SIN(x)*y,y)");
-        // String result = engine.execute(QUERY);
+        // String result = engine.executae(QUERY);
        // CalcFunctionEvaluator evaluate= y.getEvaluator();
         System.out.println(function2);
             Scanner y = new Scanner(System.in);
@@ -26,7 +26,7 @@ public class uncertainityCalculuator {
         System.out.println("what is the function name?");
             String name = y.nextLine();
             uncertainityCalculuator test = new uncertainityCalculuator();
-           FunctionDef function = new FunctionDef(name);
+           FunctionDef function = new FunctionDef(name,null);
            // System.out.println("The derivative is:");
             HashMap<String,Variable> vars = function.getVariables();
            HashMap<String,Variable> temp = new HashMap<String,Variable>();
@@ -47,11 +47,24 @@ public class uncertainityCalculuator {
             System.out.println("Evaluated at the given points is: "+function.recursiveEvaluate(function.function));
 
             i++;
-            }
+            }*/
 
 
         }
+    public static Variable calculateUncertainity(String functionName, HashMap<String,Variable> value){
+        Variable result = new Variable(new Double(0));
+        FunctionDef function = new FunctionDef(functionName,value);
+        double uncertain = 0;
+        ArrayList<Double>  numerical = function.derivateCalculator();
+        for(Double d : numerical){
+            uncertain += d*d;
+        }
+        uncertain = Math.pow(uncertain,1/2);
 
+        result.value = function.recursiveEvaluate(function.function);
+        result.uncertain = uncertain;
+        return result;
+    }
 
     }
 
