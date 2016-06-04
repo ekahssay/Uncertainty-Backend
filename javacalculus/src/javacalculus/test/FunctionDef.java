@@ -25,7 +25,7 @@ public class FunctionDef {
         this.variables = variables;
     }
 
-    public FunctionDef(String f)
+    public FunctionDef(String f, HashMap<String,Variable> var)
     {
         engine = new CalculusEngine();
         variables = new HashMap<String,Variable>();
@@ -43,12 +43,12 @@ public class FunctionDef {
         String [] vars = splitVar[1].split(",");
         function = (CalcFunction)engine.parser("DIFF("+func+","+vars[0]+")").getParameters().get(0);
 
-        for(int i = 0; i < vars.length; i++){
+      /*  for(int i = 0; i < vars.length; i++){
             Variable var = new Variable(null);
            // var.derivative = engine.derivative("DIFF("+func+","+vars[i]+")");
            // var.derivativeName= engine.execute("DIFF("+func+","+vars[i]+")");
             variables.put(vars[i],var);
-        }
+        }*/
 
     }
     public double recursiveEvaluate(CalcObject object){
@@ -117,8 +117,10 @@ public class FunctionDef {
     public  ArrayList<Double> derivateCalculator(){
         ArrayList<Double> result = new ArrayList<Double> ();
         HashMap<String,Variable> clone = new HashMap<String,Variable>(variables);
+        double uncertainity = 0;
         for(String var : clone.keySet()){
-            result.add(partialDerivate(var));
+            double value = partialDerivate(var);
+            result.add(value*clone.get(var).uncertain);
         }
         return  result;
     }
