@@ -8,6 +8,7 @@ import javacalculus.struct.CalcFunction;
 public class Variable {
     public Double value;
     public CalcFunction derivative;
+    public Double uncertain; 
     public String derivativeName;
     public Variable(Double next) {
         value  = next;
